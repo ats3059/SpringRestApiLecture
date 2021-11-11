@@ -1,5 +1,4 @@
-package com.example.webService;
-
+package com.example.webService.helloworld;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +24,8 @@ public class HelloWorldController {
     public HelloWorldBean helloWorldBean(@PathVariable String name){
         return new HelloWorldBean(String.format("Hello World, %s",name));
     }
+
+
 
 
 

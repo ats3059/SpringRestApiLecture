@@ -1,4 +1,4 @@
-package com.example.webService;
+package com.example.webService.helloworld;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
