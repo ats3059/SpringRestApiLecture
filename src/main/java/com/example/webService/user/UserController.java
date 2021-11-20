@@ -1,8 +1,9 @@
 package com.example.webService.user;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class UserController extends EntityModel{
     private final UserDaoService service;
 
     @GetMapping("/users")
@@ -22,8 +24,15 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable Integer id){
-        return service.findOne(id);
+    public EntityModel<User> retrieveUser(@PathVariable Integer id){
+
+        User one = service.findOne(id);
+
+        EntityModel<User> userModel = EntityModel.of(one);
+        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        userModel.add(linkTo.withRel("all-users"));
+
+        return userModel;
     }
 
     @PostMapping("/users")
@@ -47,6 +56,23 @@ public class UserController {
         }
     }
 
+
+
+
+//    @GetMapping("/users/{id}")
+//    public EntityModel<User> retrieveUser(@PathVariable int id){
+//        Optional<User> user = userRepository.findById(id);
+//
+//        if(!user.isPresent()) {
+//            throw new UserNotFoundException(String.format("ID[%S] not found", id));
+//        }
+//
+//        EntityModel<User> userModel = new EntityModel<>(user.get());
+//        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+//        userModel.add(linkTo.withRel("all-users"));
+//
+//        return userModel;
+//    }
 
 
 
