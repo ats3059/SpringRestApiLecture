@@ -28,6 +28,8 @@ public class UserController extends EntityModel{
 
         User one = service.findOne(id);
 
+
+        //HATEOAS
         EntityModel<User> userModel = EntityModel.of(one);
         WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
         userModel.add(linkTo.withRel("all-users"));
